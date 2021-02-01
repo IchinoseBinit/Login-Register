@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:login_register_first/Models/User.dart';
 import 'package:login_register_first/Screens/login.dart';
+import 'package:login_register_first/services/user_management.dart';
 
 class Dashboard extends StatelessWidget {
-  final User user;
+  final UserCredential user;
 
   Dashboard(this.user);
 
@@ -17,7 +18,7 @@ class Dashboard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Hi " + user.fullname,
+                "Hi ",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               Container(
@@ -28,6 +29,7 @@ class Dashboard extends StatelessWidget {
                   child: Text("Log out",
                       style: TextStyle(fontSize: 30, color: Colors.white)),
                   onPressed: () {
+                    UserManagement().signOut();
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => LoginScreen()),

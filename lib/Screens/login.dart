@@ -4,45 +4,46 @@ import 'package:login_register_first/Screens/Dashboard.dart';
 import 'package:login_register_first/Screens/register.dart';
 import 'package:login_register_first/Utilities/snackbar.dart';
 import 'package:login_register_first/data/connector_database.dart';
+import 'package:login_register_first/services/user_management.dart';
 
 class LoginScreen extends StatelessWidget {
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _loginComplete(BuildContext ctx, User x) {
-    if (x != null) {
-      Navigator.push(
-          ctx, MaterialPageRoute(builder: (context) => Dashboard(x)));
-    }else{
-      showDialog(
-          context: ctx,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text("Incorrect Credentials"),
-              title: Text("Please enter valid credentials"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(
-                    'Close me!',
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
-    
-    }
-  }
+  // void _loginComplete(BuildContext ctx, User x) {
+  //   if (x != null) {
+  //     Navigator.push(
+  //         ctx, MaterialPageRoute(builder: (context) => Dashboard(x)));
+  //   }else{
+  //     showDialog(
+  //         context: ctx,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             content: Text("Incorrect Credentials"),
+  //             title: Text("Please enter valid credentials"),
+  //             actions: <Widget>[
+  //               FlatButton(
+  //                 child: Text(
+  //                   'Close me!',
+  //                   style: TextStyle(
+  //                     fontSize: 18,
+  //                   ),
+  //                 ),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               )
+  //             ],
+  //           );
+  //         });
 
-  void _login(BuildContext context, String username, String pass) {
-    ConnectDatabase cdb = new ConnectDatabase();
-    cdb.loginUser(username, pass).then((x) => _loginComplete(context, x));
-  }
+  //   }
+  // }
+
+  // void _login(BuildContext context, String username, String pass) {
+  //   ConnectDatabase cdb = new ConnectDatabase();
+  //   cdb.loginUser(username, pass).then((x) => _loginComplete(context, x));
+  // }
 
   bool _loginValidate(BuildContext ctx, String username, String pass) {
     if (username == "" || pass == "") {
@@ -80,19 +81,19 @@ class LoginScreen extends StatelessWidget {
                 child: TextFormField(
                   decoration: const InputDecoration(
                     icon: Icon(Icons.person),
-                    hintText: ' Enter your Username',
-                    labelText: 'Username *',
+                    hintText: ' Enter your Email Address',
+                    labelText: 'Email *',
                   ),
-                  controller: _usernameController,
+                  controller: _emailController,
                   onSaved: (String value) {
                     var username = value;
                     print(username);
                   },
                   validator: (String value) {
                     if (value.trim().isEmpty) {
-                      return 'Please input your username';
+                      return 'Please input your email address';
                     } else if (value.trim().length < 4) {
-                      return 'Username contains more than 4 letters.';
+                      return 'Email Address contains more than 4 letters.';
                     }
                     return "";
                   },
@@ -141,10 +142,10 @@ class LoginScreen extends StatelessWidget {
                   child: Text("Log In",
                       style: TextStyle(fontSize: 30, color: Colors.white)),
                   onPressed: () {
-                    if (_loginValidate(ctx, _usernameController.text.trim(),
+                    if (_loginValidate(ctx, _emailController.text.trim(),
                         _passwordController.text.trim())) {
-                      _login(context, _usernameController.text.trim(),
-                          _passwordController.text.trim());
+                      UserManagement().signIn(_emailController.text.trim(),
+                          _passwordController.text.trim(), context);
                     }
                   },
                 ),

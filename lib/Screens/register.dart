@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:login_register_first/Models/User.dart';
 import 'package:login_register_first/Screens/login.dart';
 import 'package:login_register_first/Utilities/snackbar.dart';
-import 'package:login_register_first/data/connector_database.dart';
+import 'package:login_register_first/services/user_management.dart';
 
 class RegisterScreen extends StatelessWidget {
   final _fullnameController = TextEditingController();
@@ -30,20 +29,12 @@ class RegisterScreen extends StatelessWidget {
       MySnackbar.showSnackbar(ctx, "Please input alphabetical value in Full Name");
     }
     else{
-      ConnectDatabase obj = new ConnectDatabase();
-      int id;
-      obj.getCount().then((x)=> id =x);
-      obj.dogs()
-      .then((x) {
-        x.forEach((User us){
-          if(us.username == username){
-            MySnackbar.showSnackbar(ctx, "Username Matched! Please Enter a new Username");
-            return;
-          }
-        });
-      });
-      obj.registerUser(new User(id, fullname, email, username, password));
-      Navigator.pushAndRemoveUntil(ctx, MaterialPageRoute(builder: (context) => LoginScreen()), ModalRoute.withName('/'));
+      try {
+        UserManagement().registerUser(fullname, email, username, password, ctx);
+      }
+      catch(e){
+        MySnackbar.showSnackbar(ctx, e);
+      }
     }
   }
 
