@@ -21,19 +21,19 @@ class RegisterScreen extends StatelessWidget {
         email == "" ||
         password == "" ||
         repassword == "") {
-      MySnackbar.showSnackbar(ctx, "Please input all the details");
+      MyUtilities.showSnackbar(ctx, "Please input all the details");
     } 
     else if (password != repassword) {
-      MySnackbar.showSnackbar(ctx, "Password does not match");
+      MyUtilities.showSnackbar(ctx, "Password does not match");
     } else if (fullname.contains(new RegExp(r'[0-9]'))) {
-      MySnackbar.showSnackbar(ctx, "Please input alphabetical value in Full Name");
+      MyUtilities.showSnackbar(ctx, "Please input alphabetical value in Full Name");
     }
     else{
       try {
         UserManagement().registerUser(fullname, email, username, password, ctx);
       }
       catch(e){
-        MySnackbar.showSnackbar(ctx, e);
+        MyUtilities.showSnackbar(ctx, e);
       }
     }
   }
@@ -76,9 +76,9 @@ class RegisterScreen extends StatelessWidget {
                   },
                   validator: (String value) {
                     if (value.trim().isEmpty) {
-                      return 'Please input your username';
+                      return 'Please input your Full Name';
                     } else if (value.trim().length < 4) {
-                      return 'Username contains more than 4 letters.';
+                      return 'Full Name contains more than 4 letters.';
                     }
                     return "";
                   },

@@ -1,53 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:login_register_first/Models/User.dart';
-import 'package:login_register_first/Screens/Dashboard.dart';
 import 'package:login_register_first/Screens/register.dart';
 import 'package:login_register_first/Utilities/snackbar.dart';
-import 'package:login_register_first/data/connector_database.dart';
 import 'package:login_register_first/services/user_management.dart';
 
 class LoginScreen extends StatelessWidget {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // void _loginComplete(BuildContext ctx, User x) {
-  //   if (x != null) {
-  //     Navigator.push(
-  //         ctx, MaterialPageRoute(builder: (context) => Dashboard(x)));
-  //   }else{
-  //     showDialog(
-  //         context: ctx,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             content: Text("Incorrect Credentials"),
-  //             title: Text("Please enter valid credentials"),
-  //             actions: <Widget>[
-  //               FlatButton(
-  //                 child: Text(
-  //                   'Close me!',
-  //                   style: TextStyle(
-  //                     fontSize: 18,
-  //                   ),
-  //                 ),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               )
-  //             ],
-  //           );
-  //         });
-
-  //   }
-  // }
-
-  // void _login(BuildContext context, String username, String pass) {
-  //   ConnectDatabase cdb = new ConnectDatabase();
-  //   cdb.loginUser(username, pass).then((x) => _loginComplete(context, x));
-  // }
-
   bool _loginValidate(BuildContext ctx, String username, String pass) {
     if (username == "" || pass == "") {
-      MySnackbar.showSnackbar(ctx, "Please input all the details");
+      MyUtilities.showSnackbar(ctx, "Please input all the details");
       return false;
     }
     return true;
@@ -145,7 +107,7 @@ class LoginScreen extends StatelessWidget {
                     if (_loginValidate(ctx, _emailController.text.trim(),
                         _passwordController.text.trim())) {
                       UserManagement().signIn(_emailController.text.trim(),
-                          _passwordController.text.trim(), context);
+                          _passwordController.text.trim(), ctx);
                     }
                   },
                 ),
